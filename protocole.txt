@@ -1,0 +1,112 @@
+Fonctionnalites :
+
+serveur
+- gerer les connexions login/mdp
+- stocker les objets/encheres
+
+client
+- se connecter au serveur
+- demander une liste des objets au serveur
+- encherir sur un objet
+- demander la liste de ses encheres
+
+
+Protocole :
+
+Connexion client:
+clt: LOGI <pseudo> <password>	(string)
+srv: HELO <pseudo>				(string)
+
+Demander la liste des objets en vente:
+clt: LSTO 
+srv: LSTO <N> (suivi des N objets un par ligne)	(liste de struct objet)
+
+Demander la liste des encheres du client:
+clt: LENC
+srv: LENC <N> (suivi des N objets un par ligne) (liste de struct objet)
+
+Encherir sur un objet
+clt: BUYO <obj_id> <N>	(struct objet, int)
+srv: BUYO <obj_id> <N>	(struct objet, int)
+
+NOPE xx:
+Login/mdp invalide 00
+Objet inexistant 01
+Prix invalide 02
+
+protocle pour se connecter et s'inscrire :
+
+USER -> se s'inscrire son pseudo
+SR_USER -> le serveur repond pour dire qu'il a bien recu le pseudo
+
+PASS -> mettre son mot de passe après connexion
+SR_PASS -> le serveur répond le mot de passe pour dire qu'il a bien recu
+
+SR_LOGI -> pour se connecter 
+SR_MMDP -> le serveur a bien recu le mot de passe pour se connecter
+
+protocole pour nouvelle enchere 
+
+ENID -> Pour une nouvelle enchere
+
+TITR -> varchar
+SR_TIT -> serveur repond enchere recu
+
+DATE -> date de mise en ligne de l'enchere
+SR_DAT-> serveur repond date recu
+
+EXPI -> date d'expiraition
+SR_EXP -> serveur recu date d'expiraition
+
+DESC -> Description de l'enchere 
+SR_ESC-> Serveur repond enchere bien recu
+
+EVAL -> Valeur d'enchere 
+SR_EVA -> serveur repond Valeur d'enchere
+
+LIST - > renvoie la liste des enchères
+
+Donnees :
+
+client
+- id
+- login
+- mdp
+
+server
+- nom/id objet
+- nom/id vendeur
+- liste des encheres
+- liste des acheteurs
+- date de debut/fin enchere
+
+
+Echange de petite données - Chiffrement Asymetrique, si non : Symetrique
+Verifier Avec Petite données si Chiffrement et signature.
+Donc vérifier quelle type de données on envoit via serveur ou client
+Et préciser dans le protocole pour chaque etape.
+Ajout de base donné sql pour stocké les client , object en vente .
+
+Gestion des erreurs :
+
+"ERR_001": "Erreur de connexion",
+"ERR_002": "Erreur de format de commande",
+"ERR_003": "Erreur de validation de signature",
+"ERR_004": "Erreur de base de données",
+"ERR_005": "Erreur de chiffrement/déchiffrement",
+"ERR_006": "Erreur mot de passe incorrect",
+"ERR_007": "Erreur de validation de nom d'utilisateur",
+"ERR_008": "Erreur de validation de date d'expiration",
+"ERR_009": "Erreur de validation de prix",
+"ERR_010": "Erreur de validation de description",
+"ERR_011": "Veuillez remplir tous les champs de connexion.",
+"ERR_012": "Veuillez remplir tous les champs d'inscription.",
+"ERR_013": "Veuillez remplir tous les champs de création d'enchère.",
+"ERR_014": "Les mots de passe ne correspondent pas.",
+"ERR_015": "Le mot de passe doit contenir entre 8 et 40 caractères.",
+"ERR_016": "Le mot de passe doit contenir au moins une lettre majuscule.",
+"ERR_017": "Le mot de passe doit contenir au moins une lettre minuscule.",
+"ERR_018": "Le mot de passe doit contenir au moins un chiffre.",
+"ERR_019": "Le mot de passe doit contenir au moins un caractère spécial.",
+"ERR_020": "L'utilisateur n'existe pas.",
+"ERR_021": "Le nom d'utilisateur existe déjà. Veuillez choisir un autre nom d'utilisateur."
